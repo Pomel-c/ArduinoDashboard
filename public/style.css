@@ -1,0 +1,142 @@
+/* Estilos generales */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    text-align: center;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Estilos para los indicadores de estado */
+.indicator {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.indicator-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: darkorange;
+}
+
+.indicator h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.indicator-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.indicator-status {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: auto;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.status-green {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.status-yellow {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.status-red {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.indicator-label {
+    flex: 1;
+    margin-right: 10px;
+    text-decoration: underline;
+}
+
+.indicator-value {
+    flex: 2;
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.indicator-status {
+    width: 100px;
+    text-align: center;
+    padding: 5px;
+    font-weight: bold;
+}
+
+/* Estilos para las tarjetas de motor */
+.motor-card {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.motor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para la barra de potencia */
+.power-bar {
+    height: 8px;
+    background-color: #007bff;
+    width: 0;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: width 0.5s;
+}
+
+/* Estilos para el relleno de la barra de potencia */
+.power-bar-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 5px;
+}
+
+/* Boton de wp */
+.whatsApp{
+	display:
+               inline-block;
+               padding:16px;
+               border-radius: 8px;
+               background-color: #199044;
+               color: #fff;
+               text-decoration: none;
+               font-family: sans-serif;
+               font-size: 16px;
+}
+
+.motor-table {
+    background-color: #fff;
+    color: #000;
+}

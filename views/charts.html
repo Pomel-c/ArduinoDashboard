@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Grafico en tiempo real</h1>
+    <canvas id="myChart"></canvas>
+    <script>
+        var socket = io.connect('http://localhost:3000');
+
+        socket.on('connect', function() {
+                console.log('Successfully connected to the server.');
+            });
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                        label: 'Voltaje',
+                        data: [],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        fill: true,
+                        lineTension: 0.25
+                    },
+                    {
+                        label: 'Temperature',
+                        data: [],
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        fill: true,
+                        lineTension: 0.25
+                    },
+                    {
+                        label: 'Corriente',
+                        data: [],
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        fill: true,
+                        lineTension: 0.25
+                    },
+                    {
+                        label: 'RPM',
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: true,
+                        lineTension: 0.25
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Motor Data'
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                },
+            }
+        });
+
+        socket.on('arduino:data', function (data) {
+            myChart.data.labels.push(new Date().toLocaleTimeString());
+            myChart.data.datasets[0].data.push(data[0]); // assuming data[0] is the value you want to graph
+            myChart.data.datasets[1].data.push(data[1]);
+            myChart.data.datasets[2].data.push(data[2]);
+            myChart.data.datasets[3].data.push(data[3]);
+
+            
+            myChart.update();
+        });
+    </script>
+</body>
+</html>

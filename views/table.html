@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Arduino Data</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Arduino Data</h1>
+  <table id="data">
+    <tr>
+      <th>Voltaje</th>
+      <th>Temperatura</th>
+      <th>Corriente</th>
+      <th>RPM</th>
+    </tr>
+  </table>
+
+  <script>
+    const socket = io.connect();
+  
+    socket.on('arduino:data', (data) => {
+      const [voltaje, temperatura, corriente, rpm] = data;
+      const row = `<tr><td>${voltaje}</td><td>${temperatura}</td><td>${corriente}</td><td>${rpm}</td></tr>`;
+      document.getElementById('data').innerHTML += row;
+    });
+  </script>
+</body>
+</html>
