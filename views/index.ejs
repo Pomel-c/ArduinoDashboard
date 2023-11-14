@@ -4,22 +4,25 @@
         <h1 class="mb-4">Sistema de Monitoreo</h1>
     </header>
     <main>
-        <a class="btn btn-primary" href="/charts">Ver gráficos</a>
-        <a class="btn btn-primary" href="/table">Ver tabla</a>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card motor-card">
-                    <div class="card-body">
-                        <h5 class="card-title">Motor 1 - Cinta transportadora</h5>
-                        <p class="card-text">Poder: 0.5 HP</span></p>
-                        <div class="power-bar" style="width: {{ 0.5 * 20 }}%; margin-bottom: 10px;">
-                            <div class="power-bar-fill"></div>
+        <div>
+            <a class="btn btn-primary" href="/charts">Ver gráficos</a>
+            <a class="btn btn-primary" href="/table">Ver tabla</a>
+        </div>
+        <div class="row" style="padding-top: 20px;">
+            <% for (let i = 0; i < motors.length; i++) { %>
+                <div class="col-md-4">
+                    <div class="card motor-card">
+                        <div class="card-body">
+                            <h5 class="card-title">Motor <%= motors[i].name %> - <%= motors[i].description %></h5>
+                            <p class="card-text">Poder: <%= motors[i].power %> HP</p>
+                            <div class="power-bar" style="width: <%= motors[i].power * 20 %>%; margin-bottom: 10px;">
+                                <div class="power-bar-fill"></div>
+                            </div>
+                            <a href="/charts" class="btn btn-primary">Detalles</a>
                         </div>
-                        <a href="#" class="btn btn-primary">Detalles</a>
                     </div>
                 </div>
-            </div>
+            <% } %>
         </div>
-        
     </main>
 </body>

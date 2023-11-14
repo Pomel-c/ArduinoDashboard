@@ -86,7 +86,15 @@
             myChart.data.datasets[2].data.push(data[2]);
             myChart.data.datasets[3].data.push(data[3]);
 
-            
+            // Limit to last 20 data points
+            if (myChart.data.labels.length > 20) {
+                myChart.data.labels.shift(); // remove first label
+                myChart.data.datasets[0].data.shift(); // remove first data point
+                myChart.data.datasets[1].data.shift(); // remove first data point
+                myChart.data.datasets[2].data.shift(); // remove first data point
+                myChart.data.datasets[3].data.shift(); // remove first data point
+            }
+                    
             myChart.update();
         });
     </script>
