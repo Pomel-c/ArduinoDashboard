@@ -2,11 +2,10 @@
 <html>
 <head>
     <title>Control de Motores</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Add this line -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <link rel="stylesheet" type="text/css" href="night-mode.css" id="night-mode">
-    
-
+    <link rel="stylesheet" type="text/css" href="/style.css"> <!-- Cambia esta línea -->
+    <link rel="stylesheet" type="text/css" href="/night-mode.css" id="night-mode"> <!-- Y esta línea si night-mode.css está en el mismo directorio que style.css -->
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -22,10 +21,10 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact_form">Contacto</a>
+                        <a class="nav-link" href="contact">Contacto</a>
                     </li>
                     <li>
-                        <button class="btn btn-primary" onclick="toggleDarkMode()">🌙</button>
+                        <button class="btn btn-primary" id="modeToggle">🌙</button>
                     </li>                    
                 </ul>
             </div>
@@ -38,15 +37,6 @@
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        function toggleDarkMode() {
-            var nightMode = document.getElementById("night-mode");
-            if (nightMode.disabled) {
-                nightMode.disabled = false;
-            } else {
-                nightMode.disabled = true;
-            }
-        }
-    </script>
+    <script src="/main.js"></script>
 </body>
 </html>

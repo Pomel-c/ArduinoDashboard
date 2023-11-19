@@ -118,6 +118,14 @@ body {
     transition: width 0.5s;
 }
 
+/* Styles for the power bar */
+.power-bar {
+    width: 100%; /* Full width */
+    background-color: #ddd; /* Grey background */
+    border-radius: 5px; /* Rounded corners */
+    overflow: hidden; /* Contains the .power-bar-fill element */
+}
+
 /* Estilos para el relleno de la barra de potencia */
 .power-bar-fill {
     height: 100%;
@@ -125,17 +133,14 @@ body {
     border-radius: 5px;
 }
 
-/* Boton de wp */
-.whatsApp{
-	display:
-               inline-block;
-               padding:16px;
-               border-radius: 8px;
-               background-color: #199044;
-               color: #fff;
-               text-decoration: none;
-               font-family: sans-serif;
-               font-size: 16px;
+
+
+/* Larger WhatsApp button on small screens */
+@media (max-width: 600px) {
+    .whatsApp {
+        padding: 24px; /* Larger padding */
+        border-radius: 12px; /* Larger border radius */
+    }
 }
 
 .motor-table {
