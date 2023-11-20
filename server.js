@@ -126,7 +126,9 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-
+app.get('/chart1', (req, res) => {
+  res.render('temperaturachart');
+});
 
 // Start the server
 server.listen(3000, () => {

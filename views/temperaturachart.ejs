@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gráfico de Temperatura</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Gráfico de Temperatura</h1>
+    <canvas id="temperatureChart"></canvas>
+    <script>
+        var ctx = document.getElementById('temperatureChart').getContext('2d');
+        var temperatureChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Temperature',
+                    data: [],
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderWidth: 1,
+                    lineTension: 0.25
+                },
+                {
+                    label: 'Upper Limit',
+                    data: Array(20).fill(90), // fill an array with 20 elements all set to 90
+                    borderColor: 'rgba(255, 0, 0, 1)',
+                    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                    borderWidth: 1,
+                    fill: "end" // no fill for this line
+                },
+                {
+                    label: 'Lower Limit',
+                    data: Array(20).fill(40), // fill an array with 20 elements all set to 40
+                    borderColor: 'rgba(255, 0, 0, 1)',
+                    backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                    borderWidth: 1,
+                    fill: "start" // fill to the previous dataset (Upper Limit)
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    
+        var socket = io();
+        socket.on('arduino:data', function (data) {
+            temperatureChart.data.labels.push(new Date().toLocaleTimeString());
+            temperatureChart.data.datasets[0].data.push(data[1]); // assuming data[2] is the temperature
+    
+            // Limit to last 20 data points
+            if (temperatureChart.data.labels.length > 20) {
+                temperatureChart.data.labels.shift(); // remove first label
+                temperatureChart.data.datasets[0].data.shift(); // remove first data point
+                temperatureChart.data.datasets[1].data.shift(); // remove first data point from Upper Limit
+                temperatureChart.data.datasets[2].data.shift(); // remove first data point from Lower Limit
+            }
+    
+            // Add new data point to Upper and Lower Limit
+            temperatureChart.data.datasets[1].data.push(90);
+            temperatureChart.data.datasets[2].data.push(40);
+    
+            temperatureChart.update();
+        });
+    </script>
+</body>
+</html>
