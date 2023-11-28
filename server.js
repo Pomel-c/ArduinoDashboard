@@ -13,7 +13,7 @@ const app = express();
 
 // Create a new SerialPort instance for communicating with an Arduino
 const port = new SerialPort({
-  path: 'COM3',
+  path: '/dev/cu.usbserial-1410',
   baudRate: 9600
 });
 
@@ -126,7 +126,7 @@ app.get('/contact', (req, res) => {
   res.render('contact');
 });
 
-app.get('/chart1', (req, res) => {
+app.get('/chart', (req, res) => {
   res.render('temperaturachart');
 });
 

@@ -55,6 +55,7 @@
                 ]
             },
             options: {
+                // animation: false,
                 responsive: true,
                 title: {
                     display: true,
@@ -87,7 +88,7 @@
             myChart.data.datasets[3].data.push(data[3]);
 
             // Limit to last 20 data points
-            if (myChart.data.labels.length > 20) {
+            if (myChart.data.labels.length > 10) {
                 myChart.data.labels.shift(); // remove first label
                 myChart.data.datasets[0].data.shift(); // remove first data point
                 myChart.data.datasets[1].data.shift(); // remove first data point
