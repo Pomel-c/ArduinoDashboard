@@ -6,22 +6,25 @@
         <div>
             <a class="btn btn-primary" href="/charts">Ver gráficos</a>
             <a class="btn btn-primary" href="/table">Ver tabla</a>
+            <a class="btn btn-primary" href="/newCard">Nuevo Motor</a>
         </div>
         <div class="row" style="padding-top: 20px;">
             <% for (let i = 0; i < motors.length; i++) { %>
                 <div class="col-md-4">
                     <div class="card motor-card">
                         <div class="card-body">
-                            <h5 class="card-title">Motor <%= motors[i].name %></h5>
+                            <h5 class="card-title"><%= motors[i].name %></h5>
                             <p class="card-text">
-                                <strong>Voltage:</strong> <%= motors[i].voltage %><br>
+                                <strong>Voltaje:</strong> <%= motors[i].voltage %><br>
                                 <strong>RPM:</strong> <%= motors[i].rpm %><br>
-                                <strong>Current:</strong> <%= motors[i].current %><br>
+                                <strong>Corriente:</strong> <%= motors[i].current %><br>
+                                <strong>Potencia:</strong> <%= motors[i].rated_power %> HP<br>
                             </p>
                             <div class="power-bar" style="width: <%= motors[i].rated_power * 20 %>%; margin-bottom: 10px;">
                                 <div class="power-bar-fill"></div>
                             </div>
                             <a href="/motor_details/<%= motors[i].id %>" class="btn btn-primary">Detalles</a>
+                            <a href="/deleteMotor/<%= motors[i].id %>" class="btn btn-danger">Eliminar</a>
                         </div>
                     </div>
                 </div>

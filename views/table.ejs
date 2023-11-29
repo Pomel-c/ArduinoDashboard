@@ -27,6 +27,7 @@
   <h1>Arduino Data</h1>
   <table id="data">
     <tr>
+      <th>Fecha</th>
       <th>Voltaje</th>
       <th>Temperatura</th>
       <th>Corriente</th>
@@ -38,8 +39,18 @@
     const socket = io.connect();
   
     socket.on('arduino:data', (data) => {
-      const [voltaje, temperatura, corriente, rpm] = data;
-      const row = `<tr><td>${voltaje}</td><td>${temperatura}</td><td>${corriente}</td><td>${rpm}</td></tr>`;
+
+      let voltaje = data[0];
+      let temperatura = data[1];
+      let corriente = data[2];
+      let rpm = data[3];
+
+      if (voltaje <= 10 && rpm <= 5) {
+          corriente = 0;
+          voltaje = 0;
+      }   
+
+      const row = `<tr><td>${new Date().toLocaleString()}</td><td>${voltaje}</td><td>${temperatura}</td><td>${corriente}</td><td>${rpm}</td></tr>`;
       document.getElementById('data').innerHTML += row;
     });
   </script>

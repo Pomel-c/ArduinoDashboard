@@ -1,170 +1,178 @@
 <body>
-    <h1 class="mb-4">Detalles de Motor</h1>
-    <a href="/charts" class="btn btn-primary mb-4">Graficos en vivo</a>
-    
-    <div class="row">
-        <!-- Cuadro de "Motor Characteristics" -->
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4>Caracteristicas de Motor</h4>
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item">Voltage: <%= motor.voltage %> </li>
-                        <li class="list-group-item">RPM: <%= motor.rpm %></li>
-                        <li class="list-group-item">Current: <%= motor.current %> </li>
-                        <li class="list-group-item">Frequency: <%= motor.frequency %> </li>
-                        <li class="list-group-item">Max Temperature: <%= motor.max_temp %>°C</li>
-                        <li class="list-group-item">Rated Power: <%= motor.rated_power %> HP</li>
-                    </ul>
-                </div>
+<h1 class="mb-4">Detalles del motor "<%= motor.name %>"</h1>
+<a href="/charts" class="btn btn-primary mb-4">Graficos en vivo</a>
+
+<div class="row">
+    <!-- Cuadro de "Motor Characteristics" -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Caracteristicas de Motor</h4>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <h4>Tips de Mantenimiento</h4>
-                </div>
-                <div class="card-body">
-                    <p>
-                        Limpie el motor con regularidad para eliminar el polvo y la suciedad.
-                        Lubrique las piezas móviles según las recomendaciones del fabricante.
-                        Inspeccione los cables y las conexiones en busca de desgaste.
-                        Realizar pruebas periódicas de funcionamiento y carga.
-                        Evite arranques y paradas frecuentes para prolongar la vida útil.
-                        Mantener un registro y cronograma de mantenimiento.
-                    </p>
-                </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    <li class="list-group-item">Voltage: <%= motor.voltage %> </li>
+                    <li class="list-group-item">RPM: <%= motor.rpm %></li>
+                    <li class="list-group-item">Current: <%= motor.current %> </li>
+                    <li class="list-group-item">Frequency: <%= motor.frequency %> </li>
+                    <li class="list-group-item">Max Temperature: <%= motor.max_temp %></li>
+                    <li class="list-group-item">Rated Power: <%= motor.rated_power %> HP</li>
+                </ul>
             </div>
         </div>
     </div>
-    
-    <!-- Indicadores de estado -->
-    
-    <table class="table motor-table">
-        <thead>
-            <tr>
-                <th>Indicador</th>
-                <th>Valor</th>
-                <th>Esperado</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Voltaje</td>
-                <td><span id="voltaje"></span> V</td>
-                <td>220-240 V</td>
-                <td class="indicator-status status-green">Normal</td>
-            </tr>
-            <tr>
-                <td>Corriente</td>
-                <td><span id="corriente"></span> A</td>
-                <td>2.0-3.0 A</td>
-                <td class="indicator-status status-green" id="corriente-indicator">Atencion</td>
-            </tr>
-            <tr>
-                <td>Temperatura</td>
-                <td><span id="temperatura"></span> °C</td>
-                <td>< 80°C</td>
-                <td class="indicator-status status-green">Peligro</td>
-            </tr>
-            <tr>
-                <td>RPM</td>
-                <td><span id="rpm"></span> rpm</td>
-                <td>3000 RPM</td>
-                <td class="indicator-status status-green" id="rpm-indicator">Normal</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        // Connect to the Socket.IO server
-        const socket = io.connect();
-    
-        socket.on('connect', function() {
-        console.log('Connected to the server');
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Tips de Mantenimiento</h4>
+            </div>
+            <div class="card-body">
+                <p>
+                    Limpie el motor con regularidad para eliminar el polvo y la suciedad.
+                    Lubrique las piezas móviles según las recomendaciones del fabricante.
+                    Inspeccione los cables y las conexiones en busca de desgaste.
+                    Realizar pruebas periódicas de funcionamiento y carga.
+                    Evite arranques y paradas frecuentes para prolongar la vida útil.
+                    Mantener un registro y cronograma de mantenimiento.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Indicadores de estado -->
+
+<table class="table motor-table">
+    <thead>
+        <tr>
+            <th>Indicador</th>
+            <th>Valor</th>
+            <th>Esperado</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Voltaje</td>
+            <td><span id="voltaje"></span> V</td>
+            <td><%= motor.voltage %> </td>
+            <td class="indicator-status status-green">Normal</td>
+        </tr>
+        <tr>
+            <td>Corriente</td>
+            <td><span id="corriente"></span> A</td>
+            <td><%= motor.current %></td>
+            <td class="indicator-status status-green" id="corriente-indicator">Atencion</td>
+        </tr>
+        <tr>
+            <td>Temperatura</td>
+            <td><span id="temperatura"></span> °C</td>
+            <td><%= motor.max_temp %></td>
+            <td class="indicator-status status-green">Peligro</td>
+        </tr>
+        <tr>
+            <td>RPM</td>
+            <td><span id="rpm"></span> rpm</td>
+            <td><%= motor.rpm %></td>
+            <td class="indicator-status status-green" id="rpm-indicator">Normal</td>
+        </tr>
+    </tbody>
+</table>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    // Connect to the Socket.IO server
+    const socket = io.connect();
+
+    socket.on('connect', function() {
+    console.log('Connected to the server');
+    });
+
+    // Listen for 'arduino:data' events
+    socket.on('arduino:data', function(data) {
+        // Assume that data is an array with the values in the following order:
+        // [voltaje, corriente, temperatura, rpm]
+        // [ '270.17', '3.46', '1.69', '482.14\n' ]
+        let voltaje = data[0];
+        let temperatura = data[1];
+        let corriente = data[2];
+        let rpm = data[3];
+
+        console.log(voltaje, temperatura, corriente, rpm);
+
+
+        if (voltaje <= 10 && rpm <= 5) {
+            corriente = 0;
+            voltaje = 0;
+        }
+
+        document.getElementById('temperatura').textContent = temperatura;
+        document.getElementById('voltaje').textContent = voltaje;
+        document.getElementById('corriente').textContent = corriente;
+        document.getElementById('rpm').textContent = rpm;
+
+        // Change indicator status based on data
+        let temperaturaIndicator = document.querySelector('#temperatura').parentNode.parentNode.querySelector('.indicator-status');
+        if (temperatura > 90) {
+            temperaturaIndicator.classList.remove('status-green', 'status-yellow');
+            temperaturaIndicator.classList.add('status-red');
+            temperaturaIndicator.textContent = 'Peligro';
+        } else if (temperatura > 80) {
+            temperaturaIndicator.classList.remove('status-green', 'status-red');
+            temperaturaIndicator.classList.add('status-yellow');
+            temperaturaIndicator.textContent = 'Atencion';
+        } else {
+            temperaturaIndicator.classList.remove('status-yellow', 'status-red');
+            temperaturaIndicator.classList.add('status-green');
+            temperaturaIndicator.textContent = 'Normal';
+        }
+
+        let rpmIndicator = document.querySelector('#rpm').parentNode.parentNode.querySelector('.indicator-status');
+        if (rpm < 2800 || rpm > 3200) {
+            rpmIndicator.classList.remove('status-green', 'status-yellow');
+            rpmIndicator.classList.add('status-red');
+            rpmIndicator.textContent = 'Peligro';
+        } else if (rpm < 2900 || rpm > 3100) {
+            rpmIndicator.classList.remove('status-green', 'status-red');
+            rpmIndicator.classList.add('status-yellow');
+            rpmIndicator.textContent = 'Atencion';
+        } else {
+            rpmIndicator.classList.remove('status-yellow', 'status-red');
+            rpmIndicator.classList.add('status-green');
+            rpmIndicator.textContent = 'Normal';
+        }
+
+        let voltajeIndicator = document.querySelector('#voltaje').parentNode.parentNode.querySelector('.indicator-status');
+        if (voltaje > 270 || voltaje < 200) {
+            voltajeIndicator.classList.remove('status-green', 'status-yellow');
+            voltajeIndicator.classList.add('status-red');
+            voltajeIndicator.textContent = 'Peligro';
+        } else if (voltaje > 240 || voltaje < 210) {
+            voltajeIndicator.classList.remove('status-green', 'status-red');
+            voltajeIndicator.classList.add('status-yellow');
+            voltajeIndicator.textContent = 'Atencion';
+        } else {
+            voltajeIndicator.classList.remove('status-red', 'status-yellow');
+            voltajeIndicator.classList.add('status-green');
+            voltajeIndicator.textContent = 'Normal';
+        }
+
+        // Add code for corriente
+        let corrienteIndicator = document.querySelector('#corriente').parentNode.parentNode.querySelector('.indicator-status');
+        if (corriente > 3.0 || corriente < 1.0) {
+            corrienteIndicator.classList.remove('status-green', 'status-yellow');
+            corrienteIndicator.classList.add('status-red');
+            corrienteIndicator.textContent = 'Peligro';
+        } else if (corriente > 2.5 || corriente < 1.5) {
+            corrienteIndicator.classList.remove('status-green', 'status-red');
+            corrienteIndicator.classList.add('status-yellow');
+            corrienteIndicator.textContent = 'Atencion';
+        } else {
+            corrienteIndicator.classList.remove('status-red', 'status-yellow');
+            corrienteIndicator.classList.add('status-green');
+            corrienteIndicator.textContent = 'Normal';
+        }
         });
-    
-        // Listen for 'arduino:data' events
-        socket.on('arduino:data', function(data) {
-            // Assume that data is an array with the values in the following order:
-            // [voltaje, corriente, temperatura, rpm]
-            // [ '270.17', '3.46', '1.69', '482.14\n' ]
-            let voltaje = data[0];
-            let temperatura = data[1];
-            let corriente = data[2];
-            let rpm = data[3];
-    
-            document.getElementById('temperatura').textContent = temperatura;
-            document.getElementById('voltaje').textContent = voltaje;
-            document.getElementById('corriente').textContent = corriente;
-            document.getElementById('rpm').textContent = rpm;
-    
-            // Change indicator status based on data
-            let temperaturaIndicator = document.querySelector('#temperatura').parentNode.parentNode.querySelector('.indicator-status');
-            if (temperatura > 90) {
-                temperaturaIndicator.classList.remove('status-green', 'status-yellow');
-                temperaturaIndicator.classList.add('status-red');
-                temperaturaIndicator.textContent = 'Peligro';
-            } else if (temperatura > 80) {
-                temperaturaIndicator.classList.remove('status-green', 'status-red');
-                temperaturaIndicator.classList.add('status-yellow');
-                temperaturaIndicator.textContent = 'Atencion';
-            } else {
-                temperaturaIndicator.classList.remove('status-yellow', 'status-red');
-                temperaturaIndicator.classList.add('status-green');
-                temperaturaIndicator.textContent = 'Normal';
-            }
-    
-            let rpmIndicator = document.querySelector('#rpm').parentNode.parentNode.querySelector('.indicator-status');
-            if (rpm < 1500 || rpm > 2000) {
-                rpmIndicator.classList.remove('status-green', 'status-yellow');
-                rpmIndicator.classList.add('status-red');
-                rpmIndicator.textContent = 'Peligro';
-            } else if (rpm < 1600 || rpm > 1900) {
-                rpmIndicator.classList.remove('status-green', 'status-red');
-                rpmIndicator.classList.add('status-yellow');
-                rpmIndicator.textContent = 'Atencion';
-            } else {
-                rpmIndicator.classList.remove('status-yellow', 'status-red');
-                rpmIndicator.classList.add('status-green');
-                rpmIndicator.textContent = 'Normal';
-            }
-    
-            let voltajeIndicator = document.querySelector('#voltaje').parentNode.parentNode.querySelector('.indicator-status');
-            if (voltaje > 270 || voltaje < 200) {
-                voltajeIndicator.classList.remove('status-green', 'status-yellow');
-                voltajeIndicator.classList.add('status-red');
-                voltajeIndicator.textContent = 'Peligro';
-            } else if (voltaje > 240 || voltaje < 220) {
-                voltajeIndicator.classList.remove('status-green', 'status-red');
-                voltajeIndicator.classList.add('status-yellow');
-                voltajeIndicator.textContent = 'Atencion';
-            } else {
-                voltajeIndicator.classList.remove('status-red', 'status-yellow');
-                voltajeIndicator.classList.add('status-green');
-                voltajeIndicator.textContent = 'Normal';
-            }
-    
-            // Add code for corriente
-            let corrienteIndicator = document.querySelector('#corriente').parentNode.parentNode.querySelector('.indicator-status');
-            if (corriente > 3.5 || corriente < 1.5) {
-                corrienteIndicator.classList.remove('status-green', 'status-yellow');
-                corrienteIndicator.classList.add('status-red');
-                corrienteIndicator.textContent = 'Peligro';
-            } else if (corriente > 3.0 || corriente < 2.0) {
-                corrienteIndicator.classList.remove('status-green', 'status-red');
-                corrienteIndicator.classList.add('status-yellow');
-                corrienteIndicator.textContent = 'Atencion';
-            } else {
-                corrienteIndicator.classList.remove('status-red', 'status-yellow');
-                corrienteIndicator.classList.add('status-green');
-                corrienteIndicator.textContent = 'Normal';
-            }
-            });
-    </script>
-    
-    </body>
+</script>
+
+</body>

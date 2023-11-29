@@ -6,7 +6,7 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <h1>Grafico en tiempo real</h1>
+    <h1>Gráfico en tiempo real</h1>
     <canvas id="myChart"></canvas>
     <script>
         var socket = io();
@@ -55,7 +55,7 @@
                 ]
             },
             options: {
-                // animation: false,
+                animation: false,
                 responsive: true,
                 title: {
                     display: true,
@@ -81,11 +81,22 @@
         });
 
         socket.on('arduino:data', function (data) {
+            console.log(data);
+            let voltaje = data[0];
+            let temperatura = data[1];
+            let corriente = data[2];
+            let rpm = data[3];
+
+            if (voltaje <= 10 && rpm <= 5) {
+                corriente = 0;
+                voltaje = 0;
+            }   
+            
             myChart.data.labels.push(new Date().toLocaleTimeString());
-            myChart.data.datasets[0].data.push(data[0]); // assuming data[0] is the value you want to graph
-            myChart.data.datasets[1].data.push(data[1]);
-            myChart.data.datasets[2].data.push(data[2]);
-            myChart.data.datasets[3].data.push(data[3]);
+            myChart.data.datasets[0].data.push(voltaje); // assuming data[0] is the value you want to graph
+            myChart.data.datasets[1].data.push(temperatura);
+            myChart.data.datasets[2].data.push(corriente);
+            myChart.data.datasets[3].data.push(rpm);
 
             // Limit to last 20 data points
             if (myChart.data.labels.length > 10) {
