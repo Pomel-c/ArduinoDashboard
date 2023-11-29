@@ -1,39 +1,62 @@
+//  ssh -R 80:localhost:3000 localhost.run
+//  btunnel http --key JDJhJDEyJEZ3L3dvWGtkWVQ3ZVhsYkVJbFREUE9DYkwwTVJoanhFRlhGRXV2UmE4RDVvVGJvdWtkWE1L --port 3000
+
 // Import required modules
 const express = require('express');
 const socketIo = require('socket.io');
 const SerialPort = require('serialport').SerialPort;
 const ejs = require('ejs');
-
-//  ssh -R 80:localhost:5000 localhost.run
-//  btunnel http --key JDJhJDEyJEZ3L3dvWGtkWVQ3ZVhsYkVJbFREUE9DYkwwTVJoanhFRlhGRXV2UmE4RDVvVGJvdWtkWE1L --port 5000
-
-
-// Create an instance of the Express application
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database(':memory:');
+const bodyParser = require('body-parser');
 const app = express();
-
-// Create a new SerialPort instance for communicating with an Arduino
 const port = new SerialPort({
   path: '/dev/cu.usbserial-1410',
   baudRate: 9600
 });
-
-// Create an HTTP server using the Express app
 const server = require('http').Server(app);
-
-// Create a Socket.IO instance using the HTTP server
 const io = socketIo(server);
-
-// Import Express middleware for rendering views with EJS
 const expressLayouts = require('express-ejs-layouts');
 
-// Use the Express middleware for rendering views with EJS
+db.serialize(() => {
+  db.run("CREATE TABLE motors (id INTEGER PRIMARY KEY, name TEXT, voltage TEXT, rpm INTEGER, current TEXT, frequency TEXT, max_temp INTEGER, rated_power REAL)");
+
+  const motors = [
+    {
+      'id': 1,
+      'name': 'Cinta transportadora',
+      'voltage': '220-240 V',
+      'rpm': '3000 rpm',
+      'current': '2.0  A',
+      'frequency': '50 Hz',
+      'max_temp': '80 ºC',
+      'rated_power': 0.5
+    },
+    {
+      'id': 2,
+      'name': 'Compresor taller',
+      'voltage': '220-240 V',
+      'rpm': '2000 rpm',
+      'current': '3.0 A',
+      'frequency': '60 Hz',
+      'max_temp': '90 ºC',
+      'rated_power': 1.0
+    }
+  ];
+
+  const stmt = db.prepare("INSERT INTO motors VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+  for (let i = 0; i < motors.length; i++) {
+    stmt.run(motors[i].id, motors[i].name, motors[i].voltage, motors[i].rpm, motors[i].current, motors[i].frequency, motors[i].max_temp, motors[i].rated_power);
+  }
+  stmt.finalize();
+});
+
+
 app.use(expressLayouts);
-
-// Set the view engine to EJS
 app.set('view engine', 'ejs');
-
-// Serve static files from the 'public' directory
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Listen for new Socket.IO connections
 io.on('connection', (socket) => {
@@ -50,64 +73,30 @@ io.on('connection', (socket) => {
 });
 
 
-const motors = [
-  {
-    'id': 1,
-    'name': 'Motor 1 - Cinta transportadora',
-    'voltage': '220-240 V',
-    'rpm': 1850,
-    'current': '2.5 A',
-    'frequency': '50 Hz',
-    'max_temp': 80,
-    'rated_power': 0.5
-  },
-  {
-    'id': 2,
-    'name': 'Motor 2 - Compresor taller',
-    'voltage': '220-240 V',
-    'rpm': 2000,
-    'current': '3.0 A',
-    'frequency': '60 Hz',
-    'max_temp': 90,
-    'rated_power': 1.0
-  },
-  {
-    'id': 3,
-    'name': 'Motor 3 - Tornillo sin fin',
-    'voltage': '220-240 V',
-    'rpm': 2600,
-    'current': '3.0 A',
-    'frequency': '50 Hz',
-    'max_temp': 75,
-    'rated_power': 1.5
-  },
-  {
-    'id': 4,
-    'name': 'Motor 4',
-    'voltage': '220-240 V',
-    'rpm': 1600,
-    'current': '2.5 A',
-    'frequency': '50 Hz',
-    'max_temp': 90,
-    'rated_power': 2.5
-  }
-  // Agrega más motores según sea necesario
-];
 
 // Ruta para la pagina del index
 app.get('/', (req, res) => {
-  res.render('index', { motors });
+  db.all("SELECT * FROM motors", [], (err, motors) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    res.render('index', { motors });
+  });
 });
 
 // Ruta para detalles del motor
 app.get('/motor_details/:id', (req, res) => {
   const id = parseInt(req.params.id);
-  const motor = motors.find(m => m.id === id);
-  if (motor) {
-    res.render('detail', { motor });
-  } else {
-    res.status(404).send('Motor not found');
-  }
+  db.get("SELECT * FROM motors WHERE id = ?", [id], (err, motor) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    if (motor) {
+      res.render('detail', { motor });
+    } else {
+      res.status(404).send('Motor not found');
+    }
+  });
 });
 
 // Ruta para la pagina de los graficos
@@ -128,6 +117,37 @@ app.get('/contact', (req, res) => {
 
 app.get('/chart', (req, res) => {
   res.render('temperaturachart');
+});
+
+
+app.get('/newCard', (req, res) => {
+  res.render('newCard');
+});
+
+
+app.post('/newCard', (req, res) => {
+  const { name, voltage, rpm, current, frequency, max_temp, rated_power } = req.body;
+  const voltageWithUnit = voltage + ' V';
+  const rpmWithUnit = rpm + ' rpm';
+  const currentWithUnit = current + ' A';
+  const frequencyWithUnit = frequency + ' Hz';
+  const max_tempWithUnit = max_temp + ' ºC';
+  const rated_powerWithUnit = rated_power;
+  db.run(`INSERT INTO motors (name, voltage, rpm, current, frequency, max_temp, rated_power) VALUES (?, ?, ?, ?, ?, ?, ?)`, [name, voltageWithUnit, rpmWithUnit, currentWithUnit, frequencyWithUnit, max_tempWithUnit, rated_powerWithUnit], function(err) {
+      if (err) {
+          return console.log(err.message);
+      }
+      res.redirect('/');
+  });
+});
+app.get('/deleteMotor/:id', (req, res) => {
+  const id = req.params.id;
+  db.run(`DELETE FROM motors WHERE id = ?`, id, (err) => {
+      if (err) {
+          return console.error(err.message);
+      }
+      res.redirect('/');
+  });
 });
 
 // Start the server
