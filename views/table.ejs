@@ -20,19 +20,25 @@
     th {
       background-color: #007bff;
       color: white;
+      position: sticky;
+      top: 0;
     }
   </style>
 </head>
 <body>
   <h1>Arduino Data</h1>
   <table id="data">
-    <tr>
-      <th>Fecha</th>
-      <th>Voltaje</th>
-      <th>Temperatura</th>
-      <th>Corriente</th>
-      <th>RPM</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Voltaje</th>
+        <th>Temperatura</th>
+        <th>Corriente</th>
+        <th>RPM</th>
+      </tr>
+    </thead>
+    <tbody id="dataBody">
+    </tbody>
   </table>
 
   <script>
@@ -45,13 +51,11 @@
       let corriente = data[2];
       let rpm = data[3];
 
-      if (voltaje <= 10 && rpm <= 5) {
-          corriente = 0;
-          voltaje = 0;
-      }   
+      ((v, r, c, f) => f(v, r, c))(voltaje, rpm, corriente, (v, r, c) => ((v <= 10 && r <= 5) ? ((corriente = 0), (voltaje = 0)) : null)); 
 
       const row = `<tr><td>${new Date().toLocaleString()}</td><td>${voltaje}</td><td>${temperatura}</td><td>${corriente}</td><td>${rpm}</td></tr>`;
-      document.getElementById('data').innerHTML += row;
+      const tbody = document.getElementById('dataBody');
+      tbody.innerHTML = row + tbody.innerHTML;
     });
   </script>
 </body>

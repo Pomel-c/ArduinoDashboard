@@ -101,10 +101,7 @@
         console.log(voltaje, temperatura, corriente, rpm);
 
 
-        if (voltaje <= 10 && rpm <= 5) {
-            corriente = 0;
-            voltaje = 0;
-        }
+        ((v, r, c, f) => f(v, r, c))(voltaje, rpm, corriente, (v, r, c) => ((v <= 10 && r <= 5) ? ((corriente = 0), (voltaje = 0)) : null));
 
         document.getElementById('temperatura').textContent = temperatura;
         document.getElementById('voltaje').textContent = voltaje;

@@ -87,10 +87,7 @@
             let corriente = data[2];
             let rpm = data[3];
 
-            if (voltaje <= 10 && rpm <= 5) {
-                corriente = 0;
-                voltaje = 0;
-            }   
+            ((v, r, c, f) => f(v, r, c))(voltaje, rpm, corriente, (v, r, c) => ((v <= 10 && r <= 5) ? ((corriente = 0), (voltaje = 0)) : null));
             
             myChart.data.labels.push(new Date().toLocaleTimeString());
             myChart.data.datasets[0].data.push(voltaje); // assuming data[0] is the value you want to graph

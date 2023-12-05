@@ -11,7 +11,8 @@ const db = new sqlite3.Database(':memory:');
 const bodyParser = require('body-parser');
 const app = express();
 const port = new SerialPort({
-  path: '/dev/cu.usbserial-1410',
+  // path: '/dev/cu.usbserial-1410',
+  path: 'COM3',
   baudRate: 9600
 });
 const server = require('http').Server(app);
