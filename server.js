@@ -1,5 +1,6 @@
-//  ssh -R 80:localhost:3000 localhost.run
+//  ssh -R 80:localhost:3000 nokey@localhost.run
 //  btunnel http --key JDJhJDEyJEZ3L3dvWGtkWVQ3ZVhsYkVJbFREUE9DYkwwTVJoanhFRlhGRXV2UmE4RDVvVGJvdWtkWE1L --port 3000
+//  ngrok http 3000
 
 // Import required modules
 const express = require('express');
@@ -11,8 +12,8 @@ const db = new sqlite3.Database(':memory:');
 const bodyParser = require('body-parser');
 const app = express();
 const port = new SerialPort({
-  // path: '/dev/cu.usbserial-1410',
-  path: 'COM3',
+  path: '/dev/cu.usbserial-110',
+  // path: 'COM3',
   baudRate: 9600
 });
 const server = require('http').Server(app);
