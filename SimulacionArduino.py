@@ -8,8 +8,8 @@ ser = serial.Serial('COM3', 9600)
 # Wait for the serial connection to initialize
 time.sleep(2)
 
-max_multiplier = 1.2
-min_multiplier = 0.8
+max_multiplier = 1.1
+min_multiplier = 0.9
 voltaje_necesario = 220
 temperatura_max = 80
 corriente_necesaria = 1.5
@@ -32,11 +32,10 @@ while True:
     data = f'{voltaje},{temperatura},{corriente},{rpm}\n'
     ser.write(data.encode())  # Encode the string before writing
     
-    # Wait for a second
-    time.sleep(1)
-    
-    data = f'{voltaje},{temperatura},{corriente},{rpm}\n'
-    ser.write(data.encode())  # Encode the string before writing
-    
+    print(f'Voltage: {voltaje}V')
+    print(f'Temperatura: {temperatura}°C')
+    print(f'RPM: {rpm}rpm')
+    print(f'Corriente: {corriente}A')
+    print('------------------')
     # Wait for a second
     time.sleep(1)
