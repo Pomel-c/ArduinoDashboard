@@ -62,7 +62,15 @@ void loop() {
   float Irms=get_corriente(); //Corriente eficaz (A)
   Irms = Irms;
 
-  
+ 
+  if (voltas != 0 && Irms != 0) {
+    voltage += 210;
+  }
+
+  else {
+    voltage = 0;
+  }
+
   Serial.print(voltage);
   Serial.print(",");
   Serial.print(temperatureC);
