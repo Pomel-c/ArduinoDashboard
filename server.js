@@ -12,8 +12,8 @@ const db = new sqlite3.Database(':memory:');
 const bodyParser = require('body-parser');
 const app = express();
 const port = new SerialPort({
-  path: '/dev/cu.usbserial-110',
-  // path: 'COM3',
+  //path: '/dev/cu.usbserial-110',
+  path: 'COM3',
   baudRate: 9600
 });
 const server = require('http').Server(app);
@@ -142,6 +142,7 @@ app.post('/newCard', (req, res) => {
       res.redirect('/');
   });
 });
+
 app.get('/deleteMotor/:id', (req, res) => {
   const id = req.params.id;
   db.run(`DELETE FROM motors WHERE id = ?`, id, (err) => {
